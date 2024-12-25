@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{%- block content %}
+<p>Showing list of all the banks added to the account</p>
+<div>
+    <ul>
+        {% for bank in banks %}
+            <li>{{bank.name}}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
