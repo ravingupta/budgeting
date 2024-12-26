@@ -1,1 +1,1 @@
-from .banks import router as banks_router
+from .accounts import router as accounts_router

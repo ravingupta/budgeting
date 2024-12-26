@@ -1,0 +1,46 @@
+from models import Category
+
+def update_categories() -> bool:
+    try:
+        Category(name='Food & Dining').create()
+        Category(name='Shopping').create()
+        Category(name='Entertainment').create()
+        Category(name='Travel').create()
+        Category(name='Services').create()
+        Category(name='Health & Fitness').create()
+        Category(name='Education').create()
+        Category(name='Income').create()
+        Category(name='Transfer').create()
+        return True
+    except Exception as e:
+        print(e)
+    return False
+
+    # Category(name='Groceries', parent_id=1).create()
+    # Category(name='Restaurants', parent_id=1).create()
+    # Category(name='Fast Food', parent_id=1).create()
+    # Category(name='Clothing', parent_id=5).create()
+    # Category(name='Electronics', parent_id=5).create()
+    # Category(name='Movies', parent_id=8).create()
+    # Category(name='Music', parent_id=8).create()
+    # Category(name='Flights', parent_id=10).create()
+    # Category(name='Hotels', parent_id=10).create()
+    # Category(name='Rental Cars', parent_id=10).create()
+    # Category(name='Gas & Fuel', parent_id=10).create()
+    # Category(name='Utilities', parent_id=15).create()
+    # Category(name='Phone', parent_id=15).create()
+    # Category(name='Internet', parent_id=15).create()
+    # Category(name='Insurance', parent_id=15).create()
+    # Category(name='Gym', parent_id=20).create()
+    # Category(name='Medical', parent_id=20).create()
+    # Category(name='Books', parent_id=23).create()
+    # Category(name='Tuition', parent_id=23).create()
+    # Category(name='Miscellaneous').create()
+    # Category(name='Gifts', parent_id=26).create()
+    # Category(name='Donations', parent_id=26).create()
+    # Category(name='Fees', parent_id=26).create()
+    # Category(name='Interest', parent_id=26).create()
+    # Category(name='Salary', parent_id=31).create()
+    # Category(name='Bonus', parent_id=31).create()
+    # Category(name='Investments', parent_id=31).create()
+    # Category(name='Other', parent_id=31).create()

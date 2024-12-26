@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{%- block content %}
+<p>Account Details</p>
+<div>
+    <p>Bank: {{ account.bank }}</p>
+    <p>Account Name: {{ account.name }}</p>
+    <p>Created At: {{ account.created_at }}</p>
+    <p>Updated At: {{ account.updated_at }}</p>
+    <a href="{{ url_for('read_accounts') }}">Back</a>
+</div>
+{%- endblock %}
+
+{% block script %}
+{% endblock %}
