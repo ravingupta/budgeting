@@ -17,11 +17,16 @@ class Account(BaseModel, table=True):
     def __repr__(self):
         return f'Bank: {self.bank}; Account Type: {self.name}'
     
-def db_get_accounts():
+def db_get_accounts(account_id: int = None):
     with Session(appConfig.connection) as session:
-        statement = select(Account).order_by(Account.created_at)
-        results = session.exec(statement)
-        return results.fetchall()
+        if account_id:
+            statement = select(Account).where(Account.id == account_id)
+            result = session.exec(statement)
+            return result.first()
+        else:
+            statement = select(Account).order_by(Account.created_at)
+            results = session.exec(statement)
+            return results.fetchall()
 
 def db_add_account(bank: str, name: str):
     account = Account(bank=bank, name=name)

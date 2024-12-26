@@ -1,15 +1,105 @@
 {% extends "layout.html" %}
 
 {%- block content %}
-<p>Account Details</p>
 <div>
-    <p>Bank: {{ account.bank }}</p>
-    <p>Account Name: {{ account.name }}</p>
-    <p>Created At: {{ account.created_at }}</p>
-    <p>Updated At: {{ account.updated_at }}</p>
-    <a href="{{ url_for('read_accounts') }}">Back</a>
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 relative">
+        <a href="{{ url_for('read_accounts') }}" class="absolute top-0 left-0 mt-4 ml-4 text-blue-500 hover:text-blue-700">
+            &larr; Back to All Accounts
+        </a>
+        <div class="mt-12">
+            <p class="text-gray-700 text-base">Bank: {{ account.bank }}</p>
+            <p class="text-gray-700 text-base">Account Name: {{ account.name }}</p>
+            <p class="text-gray-700 text-base">Created At: {{ account.created_at }}</p>
+            <p class="text-gray-700 text-base">Updated At: {{ account.updated_at }}</p>
+        </div>
+    </div>
+    <!-- Button to open the modal -->
+    <button id="uploadBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Upload CSV
+    </button>
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mt-4 mb-4 relative">
+        <div class="mt-12">
+            <ul>
+                {% for t in transactions %}
+                <li class="bg-white shadow rounded-lg overflow-hidden">
+                    
+                    <div class="px-4 py-5 sm:p-6">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">{{ t.description }}</h3>
+                                <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ t.date }}</p>
+                            </div>
+                            <div class="ml-4 flex-shrink-0">
+                                <p class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {% if t.type == 'debit' %}bg-red-100 text-red-800{% else %}bg-green-100 text-green-800{% endif %}">
+                                    {{ t.amount }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<!-- The Modal -->
+<div id="uploadModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Upload CSV</h2>
+                <button id="closeModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            <form id="uploadForm">
+                <div class="mb-4">
+                    <label for="csvFile" class="block text-gray-700 text-sm font-bold mb-2">Select CSV file:</label>
+                    <input type="file" id="csvFile" name="csvFile" accept=".csv" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                </div>
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Upload
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 {%- endblock %}
 
 {% block script %}
+    {{ super() }}
+
+    <script>
+        document.getElementById('uploadBtn').addEventListener('click', function() {
+            document.getElementById('uploadModal').classList.remove('hidden');
+        });
+        
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('uploadModal').classList.add('hidden');
+        });
+        
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var formData = new FormData();
+            var fileField = document.getElementById('csvFile');
+        
+            formData.append('file', fileField.files[0]);
+        
+            fetch('/transactions/{{ account.id }}', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                document.getElementById('uploadModal').classList.add('hidden');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
 {% endblock %}

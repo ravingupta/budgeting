@@ -5,14 +5,14 @@ from fastapi.templating import Jinja2Templates
 
 from config import appConfig
 from app import accounts_router
-
-from models import Category
+from app import trasactions_router
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 app.include_router(accounts_router, prefix="/accounts", tags=["accounts"])
+app.include_router(trasactions_router, prefix="/transactions", tags=["transactions"])
 
 @app.get("/")
 async def read_root(request: Request):

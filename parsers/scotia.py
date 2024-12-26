@@ -1,22 +1,18 @@
+import pandas as pd
 from parsers.parser import Parser
 
 class ScotiaParser(Parser):
-    def __init__(self, file):
-        self.super().__init__(file)
+    def __init__(self, account_id, file):
+        super().__init__(account_id, file)
 
-    def parse(self):
-        with open(self.file, 'r') as f:
-            lines = f.readlines()
-            for line in lines[1:]:
-                parts = line.split(',')
-                date = parts[1]
-                description = parts[2]
-                sub_description = parts[3]
-                amount = parts[5]
-                self.transactions.append({
-                    'date': date,
-                    'description': description + ' - ' + sub_description,
-                    'amount': amount,
-                    'type': 'debit' if float(amount) < 0 else 'credit'
-                })
-        return self.transactions
+    async def parse(self):
+        data = pd.read_csv(self.file, skiprows=1)
+        data['description'] = data.iloc[:, 2] + ' - ' + data.iloc[:, 3]
+        transactions = data.apply(lambda row: {
+            'date': row[1],
+            'description': row['description'],
+            'amount': row[5],
+            'type': 'debit' if row[5] < 0 else 'credit'
+        }, axis=1).tolist()
+        self.transactions.extend(transactions)
+        await self.save_transactions()

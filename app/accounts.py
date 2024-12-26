@@ -27,10 +27,6 @@ async def add_accounts(request: Request) -> ApiResponse:
 
 # Single Account
 
-@router.get("/{account_id}", response_class=HTMLResponse)
-async def read_account(account_id: int, request: Request):
-    return templates.TemplateResponse("account.html", {"request": request, "account_id": account_id})
-
 @router.put("/{account_id}")
 async def update_account(account_id: int, request: Request) -> ApiResponse:
     return {"message": f"Account {account_id} updated successfully"}

@@ -1,18 +1,20 @@
 {% extends "layout.html" %}
 
 {%- block content %}
-<p>Showing list of all the banks added to the account</p>
 <div>
     <ul class="space-y-2">
         {% for account in accounts %}
-            <li class="bg-white shadow overflow-hidden sm:rounded-md">
-                <a href="{{ url_for('read_account', account_id=account.id) }}" class="block hover:bg-gray-50">
-                    <div class="px-4 py-4 sm:px-6">
+            <li class="bg-white shadow rounded-lg overflow-hidden">
+                <a href="{{ url_for('read_transactions', account_id=account.id) }}" class="block hover:bg-gray-50">
+                    <div class="px-4 py-5 sm:p-6">
                         <div class="flex items-center justify-between">
-                            <p class="text-sm font-medium text-indigo-600 truncate">{{ account.bank }}</p>
-                            <div class="ml-2 flex-shrink-0 flex">
-                                <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    {{ account.name }}
+                            <div>
+                                <h3 class="text-lg leading-6 font-medium text-gray-900">{{ account.bank }}</h3>
+                                <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ account.name }}</p>
+                            </div>
+                            <div class="ml-4 flex-shrink-0">
+                                <p class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Active
                                 </p>
                             </div>
                         </div>
@@ -35,7 +37,13 @@
                             <form class="space-y-4">
                                 <div>
                                     <label for="bank" class="block text-sm font-medium text-gray-700">Bank Name:</label>
-                                    <input type="text" id="bank" name="bank" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    <select id="bank" name="bank" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <option value="">Select a bank</option>
+                                        <option value="Scotia">Scotia Bank</option>
+                                        <option value="CIBC">CIBC</option>
+                                        <option value="TD">TD</option>
+                                        <option value="RBC">Royal Bank of Canada</option>
+                                    </select>
                                 </div>
                                 <div>
                                     <label for="name" class="block text-sm font-medium text-gray-700">Account Name:</label>
@@ -68,6 +76,11 @@
 
             const bank = document.getElementById('bank').value;
             const name = document.getElementById('name').value;
+
+            if (`${bank}` == '' || `${name}` == '') {
+                alert('Please fill in all the fields');
+                return;
+            }
 
             fetch('{{ url_for("add_accounts") }}', {
                 method: 'POST',
