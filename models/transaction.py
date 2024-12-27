@@ -23,6 +23,25 @@ class Transaction(BaseModel, table=True):
     
     def __repr__(self):
         return f'{self.date} | {self.description} | {self.amount} | {self.type}'
+    
+def db_get_transaction(account_id: int, transaction_id: int):
+    with Session(appConfig.connection) as session:
+        statement = select(Transaction).where(Transaction.account_id == account_id, Transaction.id == transaction_id)
+        result = session.exec(statement)
+        return result.first()
+    
+def db_update_transaction(description: str, category: str):
+    with Session(appConfig.connection) as session:
+        statement = select(Transaction).where(Transaction.description == description)
+        result = session.exec(statement)
+        transaction = result.fetchall()
+        if len(transaction) == 0:
+            return False
+        for t in transaction:
+            t.category = category
+            session.add(t)
+        session.commit()
+        return True
 
 def db_get_transactions(account_id: int = None):
     with Session(appConfig.connection) as session:

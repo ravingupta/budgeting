@@ -17,4 +17,4 @@ def migrate_accounts():
 
 if __name__ == '__main__':
     migrate_categories()
-    migrate_accounts()
+    # migrate_accounts()

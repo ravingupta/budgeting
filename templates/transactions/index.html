@@ -25,12 +25,19 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <h3 class="text-lg leading-6 font-medium text-gray-900">{{ t.description }}</h3>
-                            <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ t.date }}</p>
+                            <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                                {% if t.category %}
+                                    {{ t.category }} <a href="#" onclick="refresh_category('{{t.account_id}}', '{{t.id}}')" class="text-blue-500 hover:text-blue-700">&#x21bb;</a>
+                                {% else %}
+                                    <a href="#" onclick="refresh_category('{{t.account_id}}', '{{t.id}}')" class="text-blue-500 hover:text-blue-700">Analyze Category</a>
+                                {% endif %}
+                            </p>
                         </div>
                         <div class="ml-4 flex-shrink-0">
                             <p class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {% if t.type == 'debit' %}bg-red-100 text-red-800{% else %}bg-green-100 text-green-800{% endif %}">
                                 {{ t.amount }}
                             </p>
+                            <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ t.date }}</p>
                         </div>
                     </div>
                 </div>
@@ -98,5 +105,21 @@
                 console.error('Error:', error);
             });
         });
+
+        refresh_category = (account_id, transaction_id) => {
+            fetch(`/transactions/${account_id}/${transaction_id}`, {
+                method: 'PUT',
+                body: JSON.stringify({
+                    request_type: "refresh_category"
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
     </script>
 {% endblock %}

@@ -4,12 +4,12 @@
 <div class="h-full">
     <div class="mt-4">
         <div class="text-center">
-            <h1 class="text-3xl">Your bank accounts</h1>
+            <h1 class="text-3xl">Dashboard</h1>
         </div>
     </div>
     <div class="mt-4">
         <h3 class="text-xl">All accounts</h3>
-        <ul>
+        <ul class="list-disc ml-4">
             {% for account in accounts %}
                 <li>
                     <a href="{{ url_for('read_account', account_id=account.id) }}" class="block hover:bg-gray-50 text-sm text-gray-500">
@@ -18,12 +18,12 @@
                 </li>
             {% endfor %}
         </ul>
-        <a href="{{url_for('read_accounts')}}">Check all accounts</a>
+        <a href="{{url_for('read_accounts')}}" class="text-blue-500 hover:text-blue-700">Check all accounts</a>
     </div>
 
     <div class="mt-4">
         <h3 class="text-lg">All categories</h3>
-        <ul>
+        <ul class="list-disc ml-4">
             {% for category in categories %}
                 <li>
                     {{ category.name }}
@@ -31,6 +31,5 @@
             {% endfor %}
         </ul>
     </div>
-    
 <div>
 {% endblock %}

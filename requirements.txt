@@ -2,3 +2,5 @@ fastapi[all]
 uvicorn
 sqlmodel
 pandas
+transformers
+tf-keras
