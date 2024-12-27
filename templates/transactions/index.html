@@ -2,44 +2,41 @@
 
 {%- block content %}
 <div>
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 relative">
-        <a href="{{ url_for('read_accounts') }}" class="absolute top-0 left-0 mt-4 ml-4 text-blue-500 hover:text-blue-700">
-            &larr; Back to All Accounts
-        </a>
-        <div class="mt-12">
-            <p class="text-gray-700 text-base">Bank: {{ account.bank }}</p>
-            <p class="text-gray-700 text-base">Account Name: {{ account.name }}</p>
-            <p class="text-gray-700 text-base">Created At: {{ account.created_at }}</p>
-            <p class="text-gray-700 text-base">Updated At: {{ account.updated_at }}</p>
+    <div class="mt-4">
+        <div class="text-center">
+            <h1 class="text-3xl">Transactions of <span class="font-bold">{{ account.bank }} - {{ account.name }}</span> account</h1>
+        </div>
+        <div class="px-4 pt-6 pb-8 mb-4 flex justify-between">
+            <a href="{{ url_for('read_account', account_id=account.id) }}" class="top-0 left-0 mt-4 ml-4 text-blue-500 hover:text-blue-700">
+                &larr; Back to account details
+            </a>
+            <!-- Button to open the modal -->
+            <button id="uploadBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Upload Transactions
+            </button>
         </div>
     </div>
-    <!-- Button to open the modal -->
-    <button id="uploadBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-        Upload CSV
-    </button>
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mt-4 mb-4 relative">
-        <div class="mt-12">
-            <ul>
-                {% for t in transactions %}
-                <li class="bg-white shadow rounded-lg overflow-hidden">
-                    
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="text-lg leading-6 font-medium text-gray-900">{{ t.description }}</h3>
-                                <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ t.date }}</p>
-                            </div>
-                            <div class="ml-4 flex-shrink-0">
-                                <p class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {% if t.type == 'debit' %}bg-red-100 text-red-800{% else %}bg-green-100 text-green-800{% endif %}">
-                                    {{ t.amount }}
-                                </p>
-                            </div>
+
+    <div class="mt-6">
+        <ul class="overflow-y-scroll h-full max-h-full">
+            {% for t in transactions %}
+            <li class="bg-white shadow rounded-lg overflow-hidden mt-2">
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-lg leading-6 font-medium text-gray-900">{{ t.description }}</h3>
+                            <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ t.date }}</p>
+                        </div>
+                        <div class="ml-4 flex-shrink-0">
+                            <p class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {% if t.type == 'debit' %}bg-red-100 text-red-800{% else %}bg-green-100 text-green-800{% endif %}">
+                                {{ t.amount }}
+                            </p>
                         </div>
                     </div>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 

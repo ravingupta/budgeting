@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{%- block content %}
+<div class="h-full">
+    <div class="mt-4">
+        <div class="text-center">
+            <h1 class="text-3xl">Your bank accounts</h1>
+        </div>
+    </div>
+    <div class="mt-4">
+        <h3 class="text-xl">All accounts</h3>
+        <ul>
+            {% for account in accounts %}
+                <li>
+                    <a href="{{ url_for('read_account', account_id=account.id) }}" class="block hover:bg-gray-50 text-sm text-gray-500">
+                        {{ account.bank }} - {{ account.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="{{url_for('read_accounts')}}">Check all accounts</a>
+    </div>
+
+    <div class="mt-4">
+        <h3 class="text-lg">All categories</h3>
+        <ul>
+            {% for category in categories %}
+                <li>
+                    {{ category.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+<div>
+{% endblock %}

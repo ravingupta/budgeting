@@ -1,31 +1,45 @@
 {% extends "layout.html" %}
 
 {%- block content %}
-<div>
-    <ul class="space-y-2">
-        {% for account in accounts %}
-            <li class="bg-white shadow rounded-lg overflow-hidden">
-                <a href="{{ url_for('read_transactions', account_id=account.id) }}" class="block hover:bg-gray-50">
-                    <div class="px-4 py-5 sm:p-6">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="text-lg leading-6 font-medium text-gray-900">{{ account.bank }}</h3>
-                                <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ account.name }}</p>
-                            </div>
-                            <div class="ml-4 flex-shrink-0">
-                                <p class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Active
-                                </p>
+<div class="h-full">
+    <div class="mt-4">
+        <div class="text-center">
+            <h1 class="text-3xl">Your bank accounts</h1>
+        </div>
+        <div class="px-4 pt-6 pb-8 mb-4 flex justify-between">
+            <a href="{{ url_for('dashboard') }}" class="top-0 left-0 mt-4 ml-4 text-blue-500 hover:text-blue-700">
+                &larr; Back to dashboard
+            </a>
+            <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onclick="openModal()">Add Bank</button>
+        </div>
+    </div>
+    <div class="space-y-2">
+        <ul>
+            {% for account in accounts %}
+                <li class="bg-white shadow rounded-lg overflow-hidden">
+                    <a href="{{ url_for('read_account', account_id=account.id) }}" class="block hover:bg-gray-50">
+                        <div class="px-4 py-5 sm:p-6">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-lg leading-6 font-medium text-gray-900">{{ account.bank }}</h3>
+                                    <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ account.name }}</p>
+                                </div>
+                                <div class="ml-4 flex-shrink-0">
+                                    <p class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                        Active
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    
 
     <div class="space-y-4">
-        <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" onclick="openModal()">Add Bank</button>
+        
         <div id="modal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                 <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onclick="closeModal()"></div>
@@ -38,7 +52,7 @@
                                 <div>
                                     <label for="bank" class="block text-sm font-medium text-gray-700">Bank Name:</label>
                                     <select id="bank" name="bank" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                        <option value="">Select a bank</option>
+                                        <option value="">Select bank</option>
                                         <option value="Scotia">Scotia Bank</option>
                                         <option value="CIBC">CIBC</option>
                                         <option value="TD">TD</option>
@@ -47,7 +61,12 @@
                                 </div>
                                 <div>
                                     <label for="name" class="block text-sm font-medium text-gray-700">Account Name:</label>
-                                    <input type="text" id="name" name="name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    <select id="name" name="name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                        <option value="">Select account type</option>
+                                        <option value="Chequing">Chequing</option>
+                                        <option value="Savings">Savings</option>
+                                        <option value="Credit">Credit Card</option>
+                                    </select>
                                 </div>
                                 <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Add Bank</button>
                             </form>

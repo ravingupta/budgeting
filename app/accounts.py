@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 
 from constants.apis import ApiResponse
-from models import db_get_accounts, db_add_account
+from models import db_get_accounts, db_add_account, db_get_transactions
 
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
@@ -13,7 +13,8 @@ templates = Jinja2Templates(directory="templates")
 @router.get("/", response_class=HTMLResponse)
 async def read_accounts(request: Request):
     accounts = db_get_accounts()
-    return templates.TemplateResponse("accounts.html", {"request": request, "accounts": accounts})
+    output = {"request": request, "accounts": accounts}
+    return templates.TemplateResponse("accounts/index.html", output)
 
 @router.post("/")
 async def add_accounts(request: Request) -> ApiResponse:
@@ -30,3 +31,16 @@ async def add_accounts(request: Request) -> ApiResponse:
 @router.put("/{account_id}")
 async def update_account(account_id: int, request: Request) -> ApiResponse:
     return {"message": f"Account {account_id} updated successfully"}
+
+@router.get("/{account_id}", response_class=HTMLResponse)
+async def read_account(account_id: int, request: Request):
+    account = db_get_accounts(account_id=account_id)
+    transactions = db_get_transactions(account_id=account_id)
+    output = {
+        "request": request, 
+        "account_id": account_id, 
+        "account": account, 
+        "transactions": transactions,
+        "transactions_count": len(transactions)
+    }
+    return templates.TemplateResponse("accounts/details.html", output)

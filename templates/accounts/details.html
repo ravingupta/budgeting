@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{%- block content %}
+<div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 relative">
+    <a href="{{ url_for('read_accounts') }}" class="absolute top-0 left-0 mt-4 ml-4 text-blue-500 hover:text-blue-700">
+        &larr; Back to All Accounts
+    </a>
+    <div class="mt-12">
+        <p class="text-gray-700 text-base">Bank: {{ account.bank }}</p>
+        <p class="text-gray-700 text-base">Account Name: {{ account.name }}</p>
+        <p class="text-gray-700 text-base">Created At: {{ account.created_at }}</p>
+        <p class="text-gray-700 text-base">Updated At: {{ account.updated_at }}</p>
+        <p class="text-gray-700 text-base">Transactions Count: {{ transactions_count }} <a href="{{ url_for('read_transactions', account_id=account.id) }}">[Check all transactions]</a></p>
+    </div>
+</div>
+{%- endblock %}
+
+{% block script %}
+    {{ super() }}
+{% endblock %}

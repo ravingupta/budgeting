@@ -2,15 +2,18 @@ from models import Category
 
 def update_categories() -> bool:
     try:
-        Category(name='Food & Dining').create()
+        Category(name='Dining').create()
         Category(name='Shopping').create()
         Category(name='Entertainment').create()
         Category(name='Travel').create()
         Category(name='Services').create()
-        Category(name='Health & Fitness').create()
         Category(name='Education').create()
         Category(name='Income').create()
         Category(name='Transfer').create()
+        Category(name='Investments').create()
+        Category(name='Groceries').create()
+        Category(name='Withdrawal').create()
+        Category(name='Bills').create()
         return True
     except Exception as e:
         print(e)
