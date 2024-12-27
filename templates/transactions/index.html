@@ -1,52 +1,60 @@
 {% extends "layout.html" %}
 
 {%- block content %}
-<div>
-    <div class="mt-4">
-        <div class="text-center">
-            <h1 class="text-3xl">Transactions of <span class="font-bold">{{ account.bank }} - {{ account.name }}</span> account</h1>
-        </div>
-        <div class="px-4 pt-6 pb-8 mb-4 flex justify-between">
-            <a href="{{ url_for('read_account', account_id=account.id) }}" class="top-0 left-0 mt-4 ml-4 text-blue-500 hover:text-blue-700">
-                &larr; Back to account details
-            </a>
-            <!-- Button to open the modal -->
-            <button id="uploadBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Upload Transactions
-            </button>
-        </div>
+<div class="mt-4">
+    <div class="text-center">
+        <h1 class="text-3xl">Transactions of <span class="font-bold">{{ account.bank }} - {{ account.name }}</span> account</h1>
     </div>
-
-    <div class="mt-6">
-        <ul class="overflow-y-scroll h-full max-h-full">
-            {% for t in transactions %}
-            <li class="bg-white shadow rounded-lg overflow-hidden mt-2">
-                <div class="px-4 py-5 sm:p-6">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">{{ t.description }}</h3>
-                            <p class="mt-1 max-w-2xl text-sm text-gray-500">
-                                {% if t.category %}
-                                    {{ t.category }} <a href="#" onclick="refresh_category('{{t.account_id}}', '{{t.id}}')" class="text-blue-500 hover:text-blue-700">&#x21bb;</a>
-                                {% else %}
-                                    <a href="#" onclick="refresh_category('{{t.account_id}}', '{{t.id}}')" class="text-blue-500 hover:text-blue-700">Analyze Category</a>
-                                {% endif %}
-                            </p>
-                        </div>
-                        <div class="ml-4 flex-shrink-0">
-                            <p class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {% if t.type == 'debit' %}bg-red-100 text-red-800{% else %}bg-green-100 text-green-800{% endif %}">
-                                {{ t.amount }}
-                            </p>
-                            <p class="mt-1 max-w-2xl text-sm text-gray-500">{{ t.date }}</p>
-                        </div>
-                    </div>
-                </div>
-            </li>
-            {% endfor %}
-        </ul>
+    <div class="px-4 pt-6 pb-8 mb-4 flex justify-between">
+        <a href="{{ url_for('read_account', account_id=account.id) }}" class="top-0 left-0 mt-4 ml-4 text-blue-500 hover:text-blue-700">
+            &larr; Back to account details
+        </a>
+        <!-- Button to open the modal -->
+        <button id="uploadBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Upload Transactions
+        </button>
     </div>
 </div>
 
+<div class="mt-6">
+
+    <div class="relative rounded-xl overflow-auto"><div class="px-4 py-8 sm:px-8">
+        <table class="border-collapse w-full border border-slate-400 dark:border-slate-500 bg-white dark:bg-slate-800 text-sm shadow-sm">
+            <thead class="bg-slate-50 dark:bg-slate-700">
+                <tr>
+                    <th class="w-1/2 border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Description</th>
+                    <th class="w-1/8 border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Category</th>
+                    <th class="w-1/8 border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Amount</th>
+                    <th class="w-1/8 border border-slate-300 dark:border-slate-600 font-semibold p-4 text-slate-900 dark:text-slate-200 text-left">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in transactions %}
+                <tr>
+                    <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
+                        {{ t.description }}
+                    </td>
+                    <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
+                        {% if t.category %}
+                            {{ t.category }} <a href="#" onclick="refresh_category('{{t.account_id}}', '{{t.id}}')" class="text-blue-500 hover:text-blue-700">&#x21bb;</a>
+                        {% else %}
+                            <a href="#" onclick="refresh_category('{{t.account_id}}', '{{t.id}}')" class="text-blue-500 hover:text-blue-700">Analyze Category</a>
+                        {% endif %}
+                    </td>
+                    <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
+                        <p class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full {% if t.type == 'debit' %}bg-red-100 text-red-800{% else %}bg-green-100 text-green-800{% endif %}">
+                            {{ t.amount }}
+                        </p>
+                    </td>
+                    <td class="border border-slate-300 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">
+                        {{ t.date }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <!-- The Modal -->
 <div id="uploadModal" class="fixed z-10 inset-0 overflow-y-auto hidden">
