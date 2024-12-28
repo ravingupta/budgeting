@@ -52,5 +52,22 @@ This project is under active development. Current focus areas:
 - Enhancing categorization accuracy
 - Improving the dashboard interface
 
+## Technologies Used
+
+### Languages and Frontend Tools
+- **Python**: The backbone of the application, powering all backend logic and data handling.
+- **HTML, CSS & Jinja2**: For structuring and styling the frontend interface.
+- **Tailwind CSS**: A modern utility-first framework for crafting responsive and sleek user interfaces.
+
+### Backend Frameworks and Libraries
+- **FastAPI**: Framework for building robust and scalable APIs.
+- **Uvicorn**: An ASGI server to efficiently run the FastAPI application.
+
+### Data and Machine Learning Tools (Python Packages)
+- **SQLModel**: For seamless database management.
+- **Pandas**: For data manipulation and analysis with ease.
+- **Transformers**: Leveraging advanced NLP models for any natural language processing tasks.
+- **TensorFlow-Keras**: Supporting the machine learning components with a powerful deep learning framework.
+
 ## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.

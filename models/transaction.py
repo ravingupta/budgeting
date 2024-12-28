@@ -1,5 +1,6 @@
 from typing import Optional
 from sqlmodel import Field, Session, select, UniqueConstraint
+from sqlalchemy import func
 
 from config import appConfig
 
@@ -46,7 +47,7 @@ def db_update_transaction(description: str, category: str):
 def db_get_transactions(account_id: int = None):
     with Session(appConfig.connection) as session:
         if account_id:
-            statement = select(Transaction).where(Transaction.account_id == account_id)
+            statement = select(Transaction).where(Transaction.account_id == account_id).order_by(Transaction.date)
             result = session.exec(statement)
             return result.fetchall()
         return []
@@ -55,3 +56,13 @@ def db_add_transaction(account_id: int, date: str, description: str, amount: flo
     trasaction = Transaction(account_id = account_id, date = date, description = description, amount = amount, type = type)
     trasaction.create()
     return trasaction
+
+def db_transaction_summary(account_id: int):
+    with Session(appConfig.connection) as session:
+        statement = select(Transaction.category, func.sum(Transaction.amount).label("Amount")).where(Transaction.account_id == account_id).group_by(Transaction.category)
+        result = session.exec(statement)
+        transactions = result.fetchall()
+        total = 0
+        for t in transactions:
+            total += t.amount
+        return total
